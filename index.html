@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ShareTools — Aluguel de Ferramentas</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+<!-- ===== NAVBAR ===== -->
+<nav class="navbar" id="navbar">
+  <div class="nav-inner">
+    <a href="#" class="logo" onclick="showPage('home')">
+      <img src="logo.svg" alt="ShareTools" style="height:36px;width:auto;" />
+    </a>
+    <div class="nav-links" id="navLinks">
+      <a href="#" onclick="showPage('catalog')">Ferramentas</a>
+      <a href="#" onclick="showPage('how')">Como Funciona</a>
+      <a href="#" onclick="showPage('catalog')">Categorias</a>
+    </div>
+    <div class="nav-actions" id="navActions">
+      <button class="btn btn-ghost" onclick="openModal('login')">Entrar</button>
+      <button class="btn btn-primary" onclick="openModal('register')">Cadastrar</button>
+    </div>
+    <div class="nav-user hidden" id="navUser">
+      <button class="btn btn-primary" onclick="showPage('newTool')">+ Anunciar Ferramenta</button>
+      <div class="avatar-btn" onclick="toggleUserMenu()">
+        <span id="userInitial">U</span>
+        <div class="user-dropdown hidden" id="userDropdown">
+          <a href="#" onclick="showPage('myTools')">Minhas Ferramentas</a>
+          <a href="#" onclick="showPage('myRentals')">Meus Aluguéis</a>
+          <a href="#" onclick="logout()">Sair</a>
+        </div>
+      </div>
+    </div>
+    <button class="hamburger" onclick="toggleMenu()">☰</button>
+  </div>
+</nav>
+
+<!-- ===== HOME PAGE ===== -->
+<div id="page-home">
+  <section class="hero">
+    <div class="hero-content">
+      <span class="badge">🌟 A maior comunidade de ferramentas do Brasil</span>
+      <h1>Alugue ferramentas de quem está <span class="highlight">perto de você</span></h1>
+      <p>Economize dinheiro alugando ferramentas de vizinhos. Ou ganhe dinheiro extra alugando as suas. Simples, seguro e acessível.</p>
+      <div class="hero-search">
+        <input type="text" id="heroSearch" placeholder="O que você precisa? Ex: furadeira, betoneira..." />
+        <button class="btn btn-primary" onclick="searchFromHero()">Buscar</button>
+      </div>
+      <div class="hero-stats">
+        <div class="stat"><strong>2.400+</strong><span>Ferramentas</span></div>
+        <div class="stat"><strong>1.800+</strong><span>Usuários</span></div>
+        <div class="stat"><strong>98%</strong><span>Satisfação</span></div>
+      </div>
+    </div>
+    <div class="hero-image">
+      <div class="hero-card-float card1">
+        <span>🔨</span>
+        <div><strong>Furadeira Bosch</strong><p>R$ 25/dia</p></div>
+      </div>
+      <div class="hero-card-float card2">
+        <span>⭐</span>
+        <div><strong>4.9 / 5.0</strong><p>Avaliação média</p></div>
+      </div>
+      <div class="hero-card-float card3">
+        <span>🔒</span>
+        <div><strong>Aluguel Seguro</strong><p>Garantia inclusa</p></div>
+      </div>
+      <div class="tool-grid-visual">
+        <div class="tool-vis">🔧</div>
+        <div class="tool-vis">🔨</div>
+        <div class="tool-vis">🪚</div>
+        <div class="tool-vis">🔩</div>
+        <div class="tool-vis">⚙️</div>
+        <div class="tool-vis">🪛</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="categories-wrapper">
+  <section class="categories-section">
+    <h2>Categorias populares</h2>
+    <div class="categories-grid">
+      <div class="cat-card" onclick="filterCategory('Perfuração')"><span>🔩</span><p>Perfuração</p></div>
+      <div class="cat-card" onclick="filterCategory('Corte')"><span>🪚</span><p>Corte</p></div>
+      <div class="cat-card" onclick="filterCategory('Pintura')"><span>🎨</span><p>Pintura</p></div>
+      <div class="cat-card" onclick="filterCategory('Construção')"><span>🏗️</span><p>Construção</p></div>
+      <div class="cat-card" onclick="filterCategory('Jardim')"><span>🌿</span><p>Jardim</p></div>
+      <div class="cat-card" onclick="filterCategory('Elétrica')"><span>⚡</span><p>Elétrica</p></div>
+      <div class="cat-card" onclick="filterCategory('Limpeza')"><span>🧹</span><p>Limpeza</p></div>
+      <div class="cat-card" onclick="filterCategory('')"><span>🔧</span><p>Ver Tudo</p></div>
+    </div>
+  </section>
+  </div>
+
+  <section class="featured-section">
+    <div class="section-header">
+      <h2>Ferramentas em destaque</h2>
+      <a href="#" onclick="showPage('catalog')" class="see-all">Ver todas →</a>
+    </div>
+    <div class="tools-grid" id="featuredTools"></div>
+  </section>
+
+  <div class="how-wrapper">
+  <section class="how-section" id="how-section">
+    <h2>Como funciona</h2>
+    <div class="steps">
+      <div class="step">
+        <div class="step-icon">🔍</div>
+        <h3>Encontre a ferramenta</h3>
+        <p>Busque por categoria ou nome. Veja fotos, avaliações e preços.</p>
+      </div>
+      <div class="step">
+        <div class="step-icon">📅</div>
+        <h3>Escolha o período</h3>
+        <p>Selecione as datas que precisa. Pague apenas pelos dias que usar.</p>
+      </div>
+      <div class="step">
+        <div class="step-icon">🤝</div>
+        <h3>Combine com o dono</h3>
+        <p>Converse pelo chat, combine a retirada e aproveite a ferramenta.</p>
+      </div>
+      <div class="step">
+        <div class="step-icon">⭐</div>
+        <h3>Avalie a experiência</h3>
+        <p>Deixe sua avaliação e ajude a comunidade a crescer.</p>
+      </div>
+    </div>
+  </section>
+  </div>
+
+  <section class="cta-section">
+    <div class="cta-inner">
+      <h2>Tem ferramentas paradas em casa?</h2>
+      <p>Anuncie gratuitamente e comece a ganhar dinheiro com o que já tem.</p>
+      <button class="btn btn-white" onclick="openModal('register')">Começar a anunciar</button>
+    </div>
+  </section>
+</div>
+
+<!-- ===== CATALOG PAGE ===== -->
+<div id="page-catalog" class="hidden">
+  <div class="page-container">
+    <div class="catalog-header">
+      <h2>Ferramentas disponíveis</h2>
+      <div class="catalog-controls">
+        <div class="search-bar">
+          <input type="text" id="catalogSearch" placeholder="Buscar ferramenta..." oninput="renderCatalog()" />
+        </div>
+        <select id="categoryFilter" onchange="renderCatalog()">
+          <option value="">Todas as categorias</option>
+          <option>Perfuração</option>
+          <option>Corte</option>
+          <option>Pintura</option>
+          <option>Construção</option>
+          <option>Jardim</option>
+          <option>Elétrica</option>
+          <option>Limpeza</option>
+        </select>
+        <select id="sortFilter" onchange="renderCatalog()">
+          <option value="recent">Mais recentes</option>
+          <option value="price-asc">Menor preço</option>
+          <option value="price-desc">Maior preço</option>
+          <option value="rating">Melhor avaliação</option>
+        </select>
+      </div>
+    </div>
+    <div class="tools-grid" id="catalogTools"></div>
+    <p class="empty-state hidden" id="emptyState">Nenhuma ferramenta encontrada para esta busca.</p>
+  </div>
+</div>
+
+<!-- ===== HOW IT WORKS PAGE ===== -->
+<div id="page-how" class="hidden">
+  <div class="page-container">
+    <h2 class="page-title">Como funciona o ShareTools</h2>
+    <div class="steps steps-vertical">
+      <div class="step"><div class="step-icon">🔍</div><div><h3>Encontre a ferramenta certa</h3><p>Use a busca ou navegue pelas categorias para encontrar a ferramenta que precisa. Veja fotos, descrições detalhadas e avaliações de outros usuários.</p></div></div>
+      <div class="step"><div class="step-icon">📅</div><div><h3>Escolha o período de aluguel</h3><p>Selecione a data de início e fim. O sistema calcula automaticamente o valor total com base no preço por dia.</p></div></div>
+      <div class="step"><div class="step-icon">💬</div><div><h3>Entre em contato com o proprietário</h3><p>Após a solicitação, o proprietário receberá uma notificação. Combiniem os detalhes de retirada e devolução diretamente pelo chat.</p></div></div>
+      <div class="step"><div class="step-icon">✅</div><div><h3>Use com responsabilidade</h3><p>Cuide bem da ferramenta como se fosse sua. Em caso de danos, o seguro opcional cobre os principais incidentes.</p></div></div>
+      <div class="step"><div class="step-icon">⭐</div><div><h3>Avalie a experiência</h3><p>Depois do aluguel, deixe sua avaliação. As avaliações ajudam a comunidade a crescer com mais confiança.</p></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== TOOL DETAIL PAGE ===== -->
+<div id="page-detail" class="hidden">
+  <div class="page-container" id="detailContent"></div>
+</div>
+
+<!-- ===== NEW TOOL PAGE ===== -->
+<div id="page-newTool" class="hidden">
+  <div class="page-container form-page">
+    <h2 class="page-title">Anunciar ferramenta</h2>
+    <form class="tool-form" onsubmit="submitTool(event)">
+      <div class="form-group">
+        <label>Nome da ferramenta *</label>
+        <input type="text" id="toolName" placeholder="Ex: Furadeira de Impacto Bosch" required />
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Categoria *</label>
+          <select id="toolCategory" required>
+            <option value="">Selecione...</option>
+            <option>Perfuração</option>
+            <option>Corte</option>
+            <option>Pintura</option>
+            <option>Construção</option>
+            <option>Jardim</option>
+            <option>Elétrica</option>
+            <option>Limpeza</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Preço por dia (R$) *</label>
+          <input type="number" id="toolPrice" placeholder="0,00" min="1" required />
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Cidade / Localização *</label>
+        <input type="text" id="toolCity" placeholder="Ex: São Paulo, SP" required />
+      </div>
+      <div class="form-group">
+        <label>Descrição *</label>
+        <textarea id="toolDesc" rows="4" placeholder="Descreva a ferramenta, estado de conservação, acessórios inclusos..." required></textarea>
+      </div>
+      <div class="form-group">
+        <label>Emoji representativo</label>
+        <div class="emoji-picker">
+          <span onclick="selectEmoji(this)" class="emoji-opt selected">🔧</span>
+          <span onclick="selectEmoji(this)" class="emoji-opt">🔨</span>
+          <span onclick="selectEmoji(this)" class="emoji-opt">🪚</span>
+          <span onclick="selectEmoji(this)" class="emoji-opt">🔩</span>
+          <span onclick="selectEmoji(this)" class="emoji-opt">⚙️</span>
+          <span onclick="selectEmoji(this)" class="emoji-opt">🪛</span>
+          <span onclick="selectEmoji(this)" class="emoji-opt">🎨</span>
+          <span onclick="selectEmoji(this)" class="emoji-opt">🌿</span>
+          <span onclick="selectEmoji(this)" class="emoji-opt">⚡</span>
+          <span onclick="selectEmoji(this)" class="emoji-opt">🏗️</span>
+          <span onclick="selectEmoji(this)" class="emoji-opt">🧹</span>
+        </div>
+        <input type="hidden" id="toolEmoji" value="🔧" />
+      </div>
+      <div class="form-actions">
+        <button type="button" class="btn btn-ghost" onclick="showPage('home')">Cancelar</button>
+        <button type="submit" class="btn btn-primary">Publicar anúncio</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- ===== MY TOOLS PAGE ===== -->
+<div id="page-myTools" class="hidden">
+  <div class="page-container">
+    <div class="section-header">
+      <h2 class="page-title">Minhas Ferramentas</h2>
+      <button class="btn btn-primary" onclick="showPage('newTool')">+ Nova ferramenta</button>
+    </div>
+    <div class="tools-grid" id="myToolsGrid"></div>
+    <p class="empty-state hidden" id="myToolsEmpty">Você ainda não anunciou nenhuma ferramenta. <a href="#" onclick="showPage('newTool')">Anunciar agora</a></p>
+  </div>
+</div>
+
+<!-- ===== MY RENTALS PAGE ===== -->
+<div id="page-myRentals" class="hidden">
+  <div class="page-container">
+    <h2 class="page-title">Meus Aluguéis</h2>
+    <div id="myRentalsContent"></div>
+  </div>
+</div>
+
+<!-- ===== MODALS ===== -->
+<div class="modal-overlay hidden" id="modalOverlay" onclick="closeModal()"></div>
+
+<!-- Login Modal -->
+<div class="modal hidden" id="modal-login">
+  <button class="modal-close" onclick="closeModal()">✕</button>
+  <h2>Entrar na sua conta</h2>
+  <form onsubmit="doLogin(event)">
+    <div class="form-group">
+      <label>E-mail</label>
+      <input type="email" id="loginEmail" placeholder="seu@email.com" required />
+    </div>
+    <div class="form-group">
+      <label>Senha</label>
+      <input type="password" id="loginPass" placeholder="••••••••" required />
+    </div>
+    <button type="submit" class="btn btn-primary w-full">Entrar</button>
+  </form>
+  <p class="modal-switch">Não tem conta? <a href="#" onclick="openModal('register')">Cadastre-se</a></p>
+</div>
+
+<!-- Register Modal -->
+<div class="modal hidden" id="modal-register">
+  <button class="modal-close" onclick="closeModal()">✕</button>
+  <h2>Criar conta grátis</h2>
+  <form onsubmit="doRegister(event)">
+    <div class="form-group">
+      <label>Nome completo</label>
+      <input type="text" id="regName" placeholder="Seu nome" required />
+    </div>
+    <div class="form-group">
+      <label>E-mail</label>
+      <input type="email" id="regEmail" placeholder="seu@email.com" required />
+    </div>
+    <div class="form-group">
+      <label>Cidade</label>
+      <input type="text" id="regCity" placeholder="São Paulo, SP" required />
+    </div>
+    <div class="form-group">
+      <label>Senha</label>
+      <input type="password" id="regPass" placeholder="Mínimo 6 caracteres" minlength="6" required />
+    </div>
+    <button type="submit" class="btn btn-primary w-full">Criar conta</button>
+  </form>
+  <p class="modal-switch">Já tem conta? <a href="#" onclick="openModal('login')">Entrar</a></p>
+</div>
+
+<!-- Rent Modal -->
+<div class="modal hidden" id="modal-rent">
+  <button class="modal-close" onclick="closeModal()">✕</button>
+  <h2>Solicitar aluguel</h2>
+  <div id="rentModalContent"></div>
+  <form onsubmit="confirmRent(event)">
+    <div class="form-row">
+      <div class="form-group">
+        <label>Data de início</label>
+        <input type="date" id="rentStart" onchange="calcTotal()" required />
+      </div>
+      <div class="form-group">
+        <label>Data de fim</label>
+        <input type="date" id="rentEnd" onchange="calcTotal()" required />
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Mensagem ao proprietário</label>
+      <textarea id="rentMessage" rows="3" placeholder="Apresente-se e conte para que vai usar a ferramenta..."></textarea>
+    </div>
+    <div class="rent-total hidden" id="rentTotal">
+      <span>Total estimado:</span>
+      <strong id="rentTotalValue">R$ 0,00</strong>
+    </div>
+    <button type="submit" class="btn btn-primary w-full">Enviar solicitação</button>
+  </form>
+</div>
+
+<!-- Toast notification -->
+<div class="toast hidden" id="toast"></div>
+
+<footer class="footer">
+  <div class="footer-accent"></div>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <img src="logo.svg" alt="ShareTools" class="footer-logo" />
+      <p>Conectando quem tem ferramentas com quem precisa delas. Simples, seguro e acessível.</p>
+    </div>
+    <div class="footer-links">
+      <h4>Plataforma</h4>
+      <a href="#" onclick="showPage('catalog')">Ferramentas</a>
+      <a href="#" onclick="showPage('how')">Como funciona</a>
+      <a href="#" onclick="openModal('register')">Cadastrar</a>
+    </div>
+    <div class="footer-links">
+      <h4>Suporte</h4>
+      <a href="#">Central de ajuda</a>
+      <a href="#">Segurança</a>
+      <a href="#">Termos de uso</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2026 <span>ShareTools</span>. Todos os direitos reservados.</p>
+  </div>
+</footer>
+
+<script src="app.js"></script>
+</body>
+</html>
