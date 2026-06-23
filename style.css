@@ -199,8 +199,13 @@ a { text-decoration: none; color: var(--primary); }
 
 /* lado direito do hero */
 .hero-image {
-  position: relative; height: 380px;
+  position: relative; height: 420px;
   display: flex; align-items: center; justify-content: center;
+}
+.mascote-hero {
+  height: 420px; width: auto;
+  filter: drop-shadow(0 12px 32px rgba(249,115,22,0.18));
+  animation: float-tool 4s ease-in-out infinite;
 }
 .tool-grid-visual {
   display: grid; grid-template-columns: repeat(3, 88px); gap: 18px;
